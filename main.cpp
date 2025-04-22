@@ -6,12 +6,6 @@
 
 
 
-//文字の格納
-std::string str0{ "STRING!!!" };
-
-//整数の格納
-std::string str1{ std::to_string(10) };
-
 //ウィンドウに文字を出す関数
 void Log(const std::string& message) {
 	OutputDebugStringA(message.c_str());
