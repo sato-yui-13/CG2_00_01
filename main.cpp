@@ -1,5 +1,54 @@
 #include<Windows.h>
 #include<cstdint>
+#include<string>
+#include<format>
+
+
+
+//文字の格納
+std::string str0{ "STRING!!!" };
+
+//整数の格納
+std::string str1{ std::to_string(10) };
+
+//ウィンドウに文字を出す関数
+void Log(const std::string& message) {
+	OutputDebugStringA(message.c_str());
+}
+
+
+
+std::wstring ConvertString(const std::string& str) {
+	if (str.empty()) {
+		return std::wstring();
+	}
+
+	auto sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&str[0]), static_cast<int>(str.size()), NULL, 0);
+	if (sizeNeeded == 0) {
+		return std::wstring();
+	}
+	std::wstring result(sizeNeeded, 0);
+	MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&str[0]), static_cast<int>(str.size()), &result[0], sizeNeeded);
+	return result;
+}
+
+std::string ConvertString(const std::wstring& str) {
+	if (str.empty()) {
+		return std::string();
+	}
+
+	auto sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), NULL, 0, NULL, NULL);
+	if (sizeNeeded == 0) {
+		return std::string();
+	}
+
+	std::string result(sizeNeeded, 0);
+	WideCharToMultiByte(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), result.data(), sizeNeeded, NULL, NULL);
+
+
+}
+
+
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WindoeProc(HWND hwnd, UINT msg, WPARAM wpaaram, LPARAM lparam) {
@@ -80,5 +129,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 
 	}
+	//wstring->string
+	Log(ConvertString(std::format(L"WSTRING{}\n",L"abc")));
+
+
 		return 0;
 }
