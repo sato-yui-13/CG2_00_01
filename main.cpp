@@ -5,6 +5,7 @@
 
 
 
+
 //文字の格納
 std::string str0{ "STRING!!!" };
 
