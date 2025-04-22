@@ -22,6 +22,7 @@ LRESULT CALLBACK WindoeProc(HWND hwnd, UINT msg, WPARAM wpaaram, LPARAM lparam) 
 }
 
 
+
 //ウィンドウに文字を出す関数
 void Log(const std::string& message) {
 	OutputDebugStringA(message.c_str());
